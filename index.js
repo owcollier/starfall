@@ -6,15 +6,14 @@ function randomVelocity() {
   return Math.floor(Math.random() * (15 - 5) + 5);
 }
 
+function randomColorIndex() {
+  return Math.floor(Math.random() * (5 - 1) + 1);
+}
+
 const charGraphics = new createjs.Graphics().beginFill('#F8EFBA').drawCircle(0, 450, 50);
 const fallingStarGraphics = new createjs.Graphics().beginFill('#FC427B').drawCircle(0, 0, 25);
 
-let stage;
-let nightSky;
-let fallingStars;
-let floor;
-let shadow;
-let char;
+let stage, nightSky, fallingStars, star, floor, shadow, char, test;
 
 function initStage() {
   stage = new createjs.Stage('dingCanvas');
@@ -27,15 +26,12 @@ function initSky() {
 
 function initStars() {
   fallingStars = new createjs.Container();
-  fallingStars.addChild(new createjs.Shape(fallingStarGraphics));
-  fallingStars.children[0].x = randomXCoord();
-  fallingStars.children[0].y = -25;
+  addStar();
 }
 
 function addStar() {
-  fallingStars.addChild(new createjs.Shape(fallingStarGraphics));
-  fallingStars.children[fallingStars.children.length - 1].x = randomXCoord();
-  fallingStars.children[fallingStars.children.length - 1].y = -25;
+  star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
+  fallingStars.addChild(star.shape);
 }
 
 function initFloor() {
@@ -58,9 +54,11 @@ function initShadow() {
 }
 
 function initChar() {
-  char = new createjs.Shape(charGraphics);
-  char.x = 100;
-  char.y = 97;
+  char = new Char();
+}
+
+function initTest() {
+  console.log('testing, testing');
 }
 
 function populateStage() {
@@ -68,7 +66,7 @@ function populateStage() {
   stage.addChild(fallingStars);
   stage.addChild(floor);
   stage.addChild(shadow);
-  stage.addChild(char);
+  stage.addChild(char.shape);
   stage.update();
 }
 
@@ -88,23 +86,23 @@ function initGame() {
 
   stage.addEventListener('click', (event) => {
     if (event.stageX >= 240) {
-      myVelocity = 10;
+      char.changeDirection(10);
       stage.update();
     }
     if (event.stageX < 240) {
-      myVelocity = -10;
+      char.changeDirection(-10);
       stage.update();
     }
   })
 
   createjs.Ticker.addEventListener('tick', () => {
 
-    char.x += myVelocity;
-    shadow.x += myVelocity;
+    char.shape.x += char.velocity;
+    shadow.x += char.velocity;
 
     fallingStars.children.forEach( function (child) {
 
-      child.y += starVelocity;
+      child.y += child.velocity;
 
       if (child.y >= stage.canvas.height + 25) {
         fallingStars.removeChild(child);
@@ -119,13 +117,13 @@ function initGame() {
       stage.update();
     }
 
-    if (char.x >= stage.canvas.width - 50) {
-      myVelocity = -10;
+    if (char.shape.x >= stage.canvas.width - 50) {
+      char.changeDirection(-10);
       stage.update();
     }
 
-    if (char.x <= 0 + 50) {
-      myVelocity = 10;
+    if (char.shape.x <= 0 + 50) {
+      char.changeDirection(10);
       stage.update();
     }
 
@@ -149,8 +147,8 @@ function initGame() {
       starFallFrames += 2;
     }
     stage.update();
-    console.log(`getting faster frames at: ${starFallFrames}`);
-    console.log(speedingUp);
+    console.log(`frames at: ${starFallFrames}`);
+    console.log('speeding up?', speedingUp);
   }, 3000);
 
 };
