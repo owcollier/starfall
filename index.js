@@ -62,12 +62,18 @@ function initTest() {
 }
 
 function populateStage() {
-  stage.addChild(nightSky);
-  stage.addChild(fallingStars);
-  stage.addChild(floor);
-  stage.addChild(shadow);
-  stage.addChild(char.shape);
+  stage.addChild(nightSky, fallingStars, floor, shadow, char.shape);
   stage.update();
+}
+
+function setUp() {
+  initStage();
+  initSky();
+  initStars();
+  initFloor();
+  initShadow();
+  initChar();
+  populateStage();
 }
 
 function initGame() {
@@ -76,13 +82,7 @@ function initGame() {
   let starFallFrames = 40;
   let speedingUp = true;
 
-  initStage();
-  initSky();
-  initStars();
-  initFloor();
-  initShadow();
-  initChar();
-  populateStage();
+  setUp();
 
   stage.addEventListener('click', (event) => {
     if (event.stageX >= 240) {
