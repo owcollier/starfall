@@ -10,9 +10,6 @@ function randomColorIndex() {
   return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
-const charGraphics = new createjs.Graphics().beginFill('#F8EFBA').drawCircle(0, 450, 50);
-const fallingStarGraphics = new createjs.Graphics().beginFill('#FC427B').drawCircle(0, 0, 25);
-
 let stage, nightSky, fallingStars, star, floor, shadow, char, test;
 
 function initStage() {
@@ -101,8 +98,13 @@ function initGame() {
     shadow.x += char.velocity;
 
     fallingStars.children.forEach( function (child) {
-
       child.y += child.velocity;
+      let pt = char.shape.localToLocal(0, 450, child);
+
+      if (child.hitTest(pt.x, pt.y)) { 
+        child.alpha = 0.2;
+        console.log('hit!');
+      } 
 
       if (child.y >= stage.canvas.height + 25) {
         fallingStars.removeChild(child);
