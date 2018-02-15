@@ -9,6 +9,7 @@ class Char extends createjs.Shape {
     this.x = 100;
     this.y = 97;
     this.velocity = 10;
+    this.cache(-50, 400, 100, 100);
   }
 
   changeDirection(v) {

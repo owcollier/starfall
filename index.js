@@ -13,12 +13,13 @@ function randomColorIndex() {
 let stage, nightSky, fallingStars, star, floor, shadow, char, test;
 
 function initStage() {
-  stage = new createjs.Stage('dingCanvas');
+  stage = new createjs.StageGL('dingCanvas');
 }
 
 function initSky() {
   nightSky = new createjs.Shape();
   nightSky.graphics.beginFill('#1B1464').drawRect(0, 0, stage.canvas.width, stage.canvas.height);
+  nightSky.cache(0, 0, stage.canvas.width, stage.canvas.height);
 }
 
 function initStars() {
@@ -36,9 +37,11 @@ function initFloor() {
 
   const floorTop = new createjs.Shape();
   floorTop.graphics.beginFill('#1B9CFC').drawRect(0, 590, stage.canvas.width, 15);
+  floorTop.cache(0, 590, stage.canvas.width, 15);
 
   const floorSide = new createjs.Shape();
   floorSide.graphics.beginFill('#182C61').drawRect(0, 605, stage.canvas.width, 40);
+  floorSide.cache(0, 605, stage.canvas.width, 40);
 
   floor.addChild(floorTop, floorSide);
 }
@@ -48,6 +51,7 @@ function initShadow() {
   shadow.graphics.beginFill('#1B1464').drawEllipse(-60, 448, 80, 10);
   shadow.x = 100;
   shadow.y = 145;
+  shadow.cache(-60, 448, 80, 10);
 }
 
 function initChar() {
