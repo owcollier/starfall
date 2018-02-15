@@ -10,7 +10,7 @@ function randomColorIndex() {
   return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
-let loader, stage, nightSky, fallingStars, star, floor, shadow, char, charSpriteSheet, test;
+let loader, stage, nightSky, fallingStars, star, starSprites, floor, shadow, char, charSpriteSheet, test;
 
 function init() {
   initStage();
@@ -19,7 +19,8 @@ function init() {
   loader.addEventListener('complete', initGame);
   loader.addEventListener('progress', handleProgress);
   loader.loadManifest([
-    {id:'char', src:'./assets/starfall_char.png'}
+    {id:'char', src:'./assets/starfall_char.png'},
+    {id:'star', src:'./assets/starfall_star.png'}
   ]);
 }
 
@@ -56,12 +57,20 @@ function initSky() {
 
 function initStars() {
   fallingStars = new createjs.Container();
+  starSprites = new createjs.SpriteSheet({images: [loader.getResult('star')], frames: {width: 32, height: 64}, animations: {fall: [0, 15]}});
   addStar();
 }
 
 function addStar() {
-  star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
+  star = new FallingStar(starSprites, randomXCoord(), randomVelocity());
   fallingStars.addChild(star);
+  star.scale = 2;
+  star.regX = 0;
+  star.regY = 32;
+  star.play('fall');
+  stage.update();
+  // star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
+  // fallingStars.addChild(star);
 }
 
 function initFloor() {
@@ -90,8 +99,6 @@ function initChar() {
 
   charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: { walk: { frames: [0, 15], speed: 0.1}}});
   char = new Char(charSpriteSheet);
-  char.framerate = 12;
-  stage.addChild(char);
   char.y = 405;
   char.scaleX = -3;
   char.scaleY = 3;
@@ -100,16 +107,6 @@ function initChar() {
   char.play('walk');
   stage.update();
 
-  // const data = {
-  //   images: ['./assets/starfall_char.png'],
-  //   frames: {width: 64, height: 64},
-  //   animations: {
-  //     walk: [0, 15]
-  //   }
-  // };
-  // // console.log(data);
-  // charSpriteSheet = new createjs.SpriteSheet(data);
-  // char = new Char(charSpriteSheet, 'walk');
 }
 
 function initTest() {
@@ -150,7 +147,7 @@ function initGame() {
   })
 
   // createjs.Ticker.timingMode = createjs.Ticker.RAF;
-  createjs.Ticker.framerate = 20;
+  createjs.Ticker.framerate = 15;
   createjs.Ticker.addEventListener('tick', () => {
 
     char.x += char.velocity;
@@ -168,6 +165,7 @@ function initGame() {
 
       if (child.y >= stage.canvas.height + 25) {
         fallingStars.removeChild(child);
+        console.log('out!')
       }
 
       stage.update();
