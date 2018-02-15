@@ -1,15 +1,14 @@
-class Char {
+class Char extends createjs.Shape {
   constructor() {
-    this.shape = this._initialize();
-    this.velocity = 10;
+    super();
+    this._initialize();
   }
 
   _initialize() {
-    const shape = new createjs.Shape();
-    shape.graphics.beginFill('#F8EFBA').drawCircle(0, 450, 50);
-    shape.x = 100;
-    shape.y = 97;
-    return shape;
+    this.graphics.beginFill('#F8EFBA').drawCircle(0, 450, 50);
+    this.x = 100;
+    this.y = 97;
+    this.velocity = 10;
   }
 
   changeDirection(v) {

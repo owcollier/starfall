@@ -3,7 +3,7 @@ function randomXCoord() {
 }
 
 function randomVelocity() {
-  return Math.floor(Math.random() * (15 - 5) + 5);
+  return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
 function randomColorIndex() {
@@ -28,7 +28,7 @@ function initStars() {
 
 function addStar() {
   star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
-  fallingStars.addChild(star.shape);
+  fallingStars.addChild(star);
 }
 
 function initFloor() {
@@ -59,7 +59,7 @@ function initTest() {
 }
 
 function populateStage() {
-  stage.addChild(nightSky, fallingStars, floor, shadow, char.shape);
+  stage.addChild(nightSky, fallingStars, floor, shadow, char);
   stage.update();
 }
 
@@ -82,11 +82,11 @@ function initGame() {
   setUp();
 
   stage.addEventListener('click', (event) => {
-    if (event.stageX >= 240) {
+    if (event.stageX >= char.x) {
       char.changeDirection(10);
       stage.update();
     }
-    if (event.stageX < 240) {
+    if (event.stageX < char.x) {
       char.changeDirection(-10);
       stage.update();
     }
@@ -94,14 +94,15 @@ function initGame() {
 
   createjs.Ticker.addEventListener('tick', () => {
 
-    char.shape.x += char.velocity;
+    char.x += char.velocity;
     shadow.x += char.velocity;
 
     fallingStars.children.forEach( function (child) {
-      child.y += child.velocity;
-      let pt = char.shape.localToLocal(0, 450, child);
+      child.speed += 1;
+      child.y += child.velocity + child.speed;
+      let pt = char.localToLocal(0, 450, child);
 
-      if (child.hitTest(pt.x, pt.y)) { 
+      if (child.hitArea.hitTest(pt.x, pt.y)) { 
         child.alpha = 0.2;
         console.log('hit!');
       } 
@@ -119,12 +120,12 @@ function initGame() {
       stage.update();
     }
 
-    if (char.shape.x >= stage.canvas.width - 50) {
+    if (char.x >= stage.canvas.width - 50) {
       char.changeDirection(-10);
       stage.update();
     }
 
-    if (char.shape.x <= 0 + 50) {
+    if (char.x <= 0 + 50) {
       char.changeDirection(10);
       stage.update();
     }
@@ -136,11 +137,11 @@ function initGame() {
   setInterval(function() {
     if (starFallFrames >= 40) {
       speedingUp = true;
-      console.log('<<<<<UPPER>>>>>')
+      // console.log('<<<<<UPPER>>>>>')
     }
     if (starFallFrames <= 10) {
       speedingUp = false;
-      console.log('<<<<<BOTTOM>>>>>')
+      // console.log('<<<<<BOTTOM>>>>>')
     }
     if (speedingUp) {
       starFallFrames -= 2;
@@ -149,8 +150,8 @@ function initGame() {
       starFallFrames += 2;
     }
     stage.update();
-    console.log(`frames at: ${starFallFrames}`);
-    console.log('speeding up?', speedingUp);
+    // console.log(`frames at: ${starFallFrames}`);
+    // console.log('speeding up?', speedingUp);
   }, 3000);
 
 };

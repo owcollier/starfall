@@ -1,17 +1,18 @@
-
-const colors = ['#FC427B', '#FEA47F', '#9AECDB', '#FD7272', '#FFF' ]
-
-class FallingStar {
+class FallingStar extends createjs.Shape {
   constructor(x, c, v) {
-    this.shape = this._initialize(x, c, v);
+    super();
+    this.colors = ['#FC427B', '#FEA47F', '#9AECDB', '#FD7272', '#FFF' ];
+    this._initialize(x, c, v);
   }
 
   _initialize(x, c, v) {
-    const star = new createjs.Shape();
-    star.graphics.beginFill(colors[c]).drawCircle(0, 0, 25);
-    star.x = x;
-    star.y = -25;
-    star.velocity = v;
-    return star;
+    this.graphics.beginFill(this.colors[c]).drawCircle(0, 0, 25);
+    this.x = x;
+    this.y = -25;
+    this.velocity = v;
+    this.speed = 0;
+    this.setBounds(this.x, this.y, 50, 50);
+    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill('#FFF').rect (0, 0, 70, 70));
+    this.cache(-25, -25, 50, 50);
   }
 }
