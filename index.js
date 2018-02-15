@@ -10,7 +10,19 @@ function randomColorIndex() {
   return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
-let stage, nightSky, fallingStars, star, floor, shadow, char, test;
+let loader, stage, nightSky, fallingStars, star, floor, shadow, charSprite, charSpriteSheet, test;
+
+function init() {
+  initStage();
+
+  manifest = [
+    {src: 'starfall-char.png', id: 'char'}
+  ]
+
+  loader = new createjs.LoadQueue(false);
+  loader.addEventListener('complete', handleComplete);
+  loader.loadManifest(manifest, true, './_assets/art');
+}
 
 function initStage() {
   stage = new createjs.StageGL('dingCanvas');
@@ -55,7 +67,8 @@ function initShadow() {
 }
 
 function initChar() {
-  char = new Char();
+  charSpriteSheet = new CharSpriteSheet(loader.getResult('char'));
+  charSprite = new Char()
 }
 
 function initTest() {
@@ -68,7 +81,6 @@ function populateStage() {
 }
 
 function setUp() {
-  initStage();
   initSky();
   initStars();
   initFloor();
@@ -77,7 +89,7 @@ function setUp() {
   populateStage();
 }
 
-function initGame() {
+function handleComplete() {
   let myVelocity = 10;
   let starVelocity = 10;
   let starFallFrames = 40;
