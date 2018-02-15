@@ -1,13 +1,21 @@
-class Char extends createjs.SpriteSheet {
-  constructor() {
-    super();
+class Char extends createjs.Sprite {
+  constructor(spriteSheet) {
+    super(spriteSheet);
     this._initialize();
   }
 
   _initialize() {
-    console.log('here');
+    this.x = 100;
+    this.y = 97;
+    this.velocity = 10;
+    this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill('#FFF').rect (0, 0, 70, 70));
   }
-  
+
+  changeDirection() {
+    this.velocity *= -1;
+    this.scaleX *= -1;
+  }
+
 }
 
 // class Char extends createjs.Shape {

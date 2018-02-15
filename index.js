@@ -10,18 +10,38 @@ function randomColorIndex() {
   return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
-let loader, stage, nightSky, fallingStars, star, floor, shadow, charSprite, charSpriteSheet, test;
+let loader, stage, nightSky, fallingStars, star, floor, shadow, char, charSpriteSheet, test;
 
 function init() {
   initStage();
 
-  manifest = [
-    {src: 'starfall-char.png', id: 'char'}
-  ]
-
   loader = new createjs.LoadQueue(false);
-  loader.addEventListener('complete', handleComplete);
-  loader.loadManifest(manifest, true, './_assets/art');
+  loader.addEventListener('complete', initGame);
+  loader.addEventListener('progress', handleProgress);
+  loader.loadManifest([
+    {id:'char', src:'./assets/starfall_char.png'}
+  ]);
+}
+
+// preload = new createjs.LoadQueue(false);
+//     preload.addEventListener('complete', handleComplete);
+//     preload.addEventListener('progress', handleProgress);
+//     preload.loadManifest([
+//         {id: 'isb', src: imgurl + 'side_back.png'}
+// ]);
+
+function handleProgress(){
+  var percent = Math.round(loader.progress*100);
+  console.log(percent+"%");
+}
+
+function handleComplete(){
+  console.log('init assets');
+  charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 15]}});
+  char = new createjs.Sprite(charSpriteSheet);
+  stage.addChild(char);
+  char.play('walk');
+  stage.update();
 }
 
 function initStage() {
@@ -60,15 +80,36 @@ function initFloor() {
 
 function initShadow() {
   shadow = new createjs.Shape();
-  shadow.graphics.beginFill('#1B1464').drawEllipse(-60, 448, 80, 10);
+  shadow.graphics.beginFill('#1B1464').drawEllipse(-55, 448, 110, 10);
   shadow.x = 100;
   shadow.y = 145;
-  shadow.cache(-60, 448, 80, 10);
+  shadow.cache(-55, 448, 110, 10);
 }
 
 function initChar() {
-  charSpriteSheet = new CharSpriteSheet(loader.getResult('char'));
-  charSprite = new Char()
+
+  charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: { walk: { frames: [0, 15], speed: 0.1}}});
+  char = new Char(charSpriteSheet);
+  char.framerate = 12;
+  stage.addChild(char);
+  char.y = 405;
+  char.scaleX = -3;
+  char.scaleY = 3;
+  char.regX = 32;
+  char.regY = 0;
+  char.play('walk');
+  stage.update();
+
+  // const data = {
+  //   images: ['./assets/starfall_char.png'],
+  //   frames: {width: 64, height: 64},
+  //   animations: {
+  //     walk: [0, 15]
+  //   }
+  // };
+  // // console.log(data);
+  // charSpriteSheet = new createjs.SpriteSheet(data);
+  // char = new Char(charSpriteSheet, 'walk');
 }
 
 function initTest() {
@@ -89,7 +130,7 @@ function setUp() {
   populateStage();
 }
 
-function handleComplete() {
+function initGame() {
   let myVelocity = 10;
   let starVelocity = 10;
   let starFallFrames = 40;
@@ -99,15 +140,17 @@ function handleComplete() {
 
   stage.addEventListener('click', (event) => {
     if (event.stageX >= char.x) {
-      char.changeDirection(10);
+      char.changeDirection();
       stage.update();
     }
     if (event.stageX < char.x) {
-      char.changeDirection(-10);
+      char.changeDirection();
       stage.update();
     }
   })
 
+  // createjs.Ticker.timingMode = createjs.Ticker.RAF;
+  createjs.Ticker.framerate = 20;
   createjs.Ticker.addEventListener('tick', () => {
 
     char.x += char.velocity;
@@ -116,9 +159,9 @@ function handleComplete() {
     fallingStars.children.forEach( function (child) {
       child.speed += 1;
       child.y += child.velocity + child.speed;
-      let pt = char.localToLocal(0, 450, child);
+      let pt = child.localToLocal(0, 0, char);
 
-      if (child.hitArea.hitTest(pt.x, pt.y)) { 
+      if (char.hitArea.hitTest(pt.x, pt.y)) { 
         child.alpha = 0.2;
         console.log('hit!');
       } 
@@ -136,12 +179,12 @@ function handleComplete() {
       stage.update();
     }
 
-    if (char.x >= stage.canvas.width - 50) {
+    if (char.x >= stage.canvas.width) {
       char.changeDirection(-10);
       stage.update();
     }
 
-    if (char.x <= 0 + 50) {
+    if (char.x <= 0) {
       char.changeDirection(10);
       stage.update();
     }
@@ -173,5 +216,5 @@ function handleComplete() {
 };
 
 $(() => {
-  initGame();
+  init();
 })
