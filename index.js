@@ -47,22 +47,22 @@ function handleLoading() {
 }
 
 function updateProgress() {
-  if (PROGRESS.score > 0 && PROGRESS.score <= 50) {
+  if (PROGRESS.score > 0 && PROGRESS.score <= 10) {
     PROGRESS.vibes = 'SOME VIBES...'
   }
-  else if (PROGRESS.score <= 100) {
+  else if (PROGRESS.score <= 20) {
     PROGRESS.vibes = 'OKAY VIBES...'
   }
-  else if (PROGRESS.score <= 150) {
+  else if (PROGRESS.score <= 30) {
     PROGRESS.vibes = 'PRETTY GOOD VIBES.'
   }
-  else if (PROGRESS.score <= 200) {
+  else if (PROGRESS.score <= 40) {
     PROGRESS.vibes = 'GOOD VIBES!'
   }
-  else if (PROGRESS.score <= 250) {
+  else if (PROGRESS.score <= 50) {
     PROGRESS.vibes = 'EXCELLENT VIBES!!'
   }
-  else if (PROGRESS.score > 250) {
+  else if (PROGRESS.score > 60) {
     PROGRESS.vibes = 'STRAIGHT VIBING!!!'
   }
   $('#progress').html(PROGRESS.vibes);
@@ -106,29 +106,29 @@ function initFloor() {
   floor = new createjs.Container();
 
   const floorTop = new createjs.Shape();
-  floorTop.graphics.beginFill('#1B9CFC').drawRect(0, 590, stage.canvas.width, 15);
-  floorTop.cache(0, 590, stage.canvas.width, 15);
+  floorTop.graphics.beginFill('#1B9CFC').drawRect(0, stage.canvas.height - 55, stage.canvas.width, 15);
+  floorTop.cache(0, stage.canvas.height - 55, stage.canvas.width, 15);
 
   const floorSide = new createjs.Shape();
-  floorSide.graphics.beginFill('#182C61').drawRect(0, 605, stage.canvas.width, 40);
-  floorSide.cache(0, 605, stage.canvas.width, 40);
+  floorSide.graphics.beginFill('#182C61').drawRect(0, stage.canvas.height - 40, stage.canvas.width, 40);
+  floorSide.cache(0, stage.canvas.height - 40, stage.canvas.width, 40);
 
   floor.addChild(floorTop, floorSide);
 }
 
 function initShadow() {
   shadow = new createjs.Shape();
-  shadow.graphics.beginFill('#1B1464').drawEllipse(-55, 448, 110, 10);
-  shadow.x = 100;
-  shadow.y = 145;
-  shadow.cache(-55, 448, 110, 10);
+  shadow.graphics.beginFill('#1B1464').drawEllipse(47, stage.canvas.height - 53, 110, 10);
+  // shadow.x = 100;
+  // shadow.y = 145;
+  shadow.cache(47, stage.canvas.height - 53, 110, 10);
 }
 
 function initChar() {
 
   charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: { walk: { frames: [0, 15], speed: 0.1}}});
   char = new Char(charSpriteSheet);
-  char.y = 405;
+  char.y = stage.canvas.height - 240;
   char.scaleX = -3;
   char.scaleY = 3;
   char.regX = 32;
@@ -137,21 +137,20 @@ function initChar() {
 
 }
 
-function initWelcome() {
-  text = new createjs.Text("catch the stars and accumulate good vibes!", "24px Arial", "#FFF");
-  text.x = 100;
-  text.y = 400;
-  text.textBaseline = "alphabetic";
-  text.cache(-200, -200, 600, 2000);
-}
+// function initWelcome() {
+//   text = new createjs.Text("catch the stars and accumulate good vibes!", "24px Arial", "#FFF");
+//   text.x = 100;
+//   text.y = 400;
+//   text.textBaseline = "alphabetic";
+//   text.cache(-200, -200, 600, 2000);
+// }
 
 function populateStage() {
-  stage.addChild(nightSky, fallingStars, floor, shadow, char, text);
+  stage.addChild(nightSky, fallingStars, floor, shadow, char);
   stage.update();
 }
 
 function setUp() {
-  initWelcome();
   initSky();
   initStars();
   initFloor();
@@ -161,6 +160,11 @@ function setUp() {
 }
 
 function initGame() {
+
+  if (window.innerHeight > window.innerWidth) {
+    $('#resizeAlert').css('display', 'block');
+  }
+  
   let myVelocity = 10;
   let starVelocity = 10;
   let starFallFrames = 40;
@@ -250,6 +254,15 @@ function initGame() {
   }, 3000);
 
 };
+
+window.addEventListener('resize', () => {
+  if (window.innerHeight > window.innerWidth) {
+    $('#resizeAlert').css('display', 'block');
+  }
+  else {
+    $('#resizeAlert').css('display', 'none');
+  }
+});
 
 $(() => {
   init();

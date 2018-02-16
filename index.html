@@ -6,9 +6,15 @@
   <title>Ding Dang</title>
 </head>
 <body>
-  <canvas id="dingCanvas" width="960" height="640"></canvas>
-  <div class="progress-div" id="progress">NO VIBES...</div>
-  <div class="score-div" id="score">0</div>
+  <div id="resizeAlert" class="resize-alert-div">PLEASE ROTATE YOUR SCREEN, THIS GAME ONLY RUNS IN LANDSCAPE MODE :) </div>
+  <div class="canvas-div">
+    <canvas id="dingCanvas" width="960px" height="640px"></canvas>
+    <div class="progress-div">
+        <div class="vibes-div" id="progress">NO VIBES...</div>
+        <div class="score-div" id="score">0</div>
+    </div>
+    <div class="instructions-div">Catch the stars and accumulate good vibes!</div>
+  </div>
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://code.createjs.com/1.0.0/createjs.js "></script>
   <script src="char-sprite-sheet.js"></script>

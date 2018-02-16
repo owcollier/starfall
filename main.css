@@ -1,3 +1,12 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
 body {
   /* background: #3B3B98; */
   background-image: url(./assets/starfall_background.png);
@@ -6,28 +15,69 @@ body {
 }
 
 canvas {
-  margin: auto;
   display: block;
   border: 4px solid #1B9CFC;
+  width: 80%;
+  height: 80%;
+  /* width: 100%;
+  height: 100%; */
 }
 
 div {
-  display: inline;
   font-family: 'VT323', monospace;
 }
 
-.progress-div {
+.resize-alert-div {
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #1B1464;
+  color: #F8EFBA;
+  display: none;
+  font-size: 72px;
+  z-index: 100;
+}
+
+.canvas-div {
+  margin: auto;
   position: relative;
-  left: 25%;
-  bottom: 1.7em;
-  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 640px;
+  height: 960px; */
+  width: 100%;
+  height: 100%;
+}
+
+.progress-div {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.vibes-div {
+  display: inline;
+  /* bottom: 1.7em; */
+  font-size: 36px;
   color: #F8EFBA;
 }
 
 .score-div {
-  position: relative;
-  left: 28%;
-  bottom: 1.1em;
+  display: inline;
+  /* bottom: 1.1em; */
+  font-size: 36px;
+  color: #F8EFBA;
+}
+
+.instructions-div {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  text-align: center;
+  display: block;
   font-size: 36px;
   color: #F8EFBA;
 }
