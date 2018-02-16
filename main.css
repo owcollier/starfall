@@ -1,5 +1,8 @@
 body {
-  background: #3B3B98;
+  /* background: #3B3B98; */
+  background-image: url(./assets/starfall_background.png);
+  background-size: 10% auto;
+  background-repeat: repeat;
 }
 
 canvas {

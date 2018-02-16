@@ -19,8 +19,8 @@ function init() {
   loader.addEventListener('complete', initGame);
   loader.addEventListener('progress', handleProgress);
   loader.loadManifest([
-    {id:'char', src:'./assets/starfall_char.png'},
-    {id:'star', src:'./assets/starfall_star.png'}
+    {id:'char', src:'./assets/starfall_char2.png'},
+    {id:'star', src:'./assets/starfall_star2.png'}
   ]);
 }
 
@@ -38,7 +38,7 @@ function handleProgress(){
 
 function handleComplete(){
   console.log('init assets');
-  charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 15]}});
+  charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 32]}});
   char = new createjs.Sprite(charSpriteSheet);
   stage.addChild(char);
   char.play('walk');
@@ -57,7 +57,7 @@ function initSky() {
 
 function initStars() {
   fallingStars = new createjs.Container();
-  starSprites = new createjs.SpriteSheet({images: [loader.getResult('star')], frames: {width: 32, height: 64}, animations: {fall: [0, 15]}});
+  starSprites = new createjs.SpriteSheet({images: [loader.getResult('star')], frames: {width: 32, height: 96}, animations: {fall: [0, 7]}});
   addStar();
 }
 
@@ -66,7 +66,7 @@ function addStar() {
   fallingStars.addChild(star);
   star.scale = 2;
   star.regX = 0;
-  star.regY = 32;
+  star.regY = 0;
   star.play('fall');
   stage.update();
   // star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
@@ -190,6 +190,10 @@ function initGame() {
     stage.update();
 
   });
+
+  setInterval(function() {
+    console.log('heyo!')
+  }, 1000);
 
   setInterval(function() {
     if (starFallFrames >= 40) {

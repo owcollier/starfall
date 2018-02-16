@@ -7,7 +7,7 @@ class FallingStar extends createjs.Sprite {
     this.velocity = v;
     this.speed = 0;
     this.x = x;
-    this.y = -64;
+    this.y = -200;
     this.setBounds(this.x, this.y, 50, 50);
     this.hitArea = new createjs.Shape(new createjs.Graphics().beginFill('#FFF').rect (0, 0, 10, 10));
   }
