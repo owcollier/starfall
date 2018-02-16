@@ -36,8 +36,8 @@ function init() {
   loader.addEventListener('complete', initGame);
   loader.addEventListener('progress', handleLoading);
   loader.loadManifest([
-    {id:'char', src:'./assets/starfall_char2.png'},
-    {id:'star', src:'./assets/starfall_star2.png'}
+    {id:'char', src:'./assets/starfall_char.png'},
+    {id:'star', src:'./assets/starfall_star.png'}
   ]);
 }
 
@@ -47,14 +47,17 @@ function handleLoading() {
 }
 
 function updateProgress() {
-  if (PROGRESS.score >= 1 && PROGRESS.score <= 10) {
+  if (PROGRESS.score < 1) {
+    PROGRESS.vibes = 'NO VIBES...'
+  }
+  else if (PROGRESS.score <= 10) {
     PROGRESS.vibes = 'SOME VIBES...'
   }
   else if (PROGRESS.score <= 20) {
     PROGRESS.vibes = 'OKAY VIBES...'
   }
   else if (PROGRESS.score <= 30) {
-    PROGRESS.vibes = 'PRETTY GOOD VIBES.'
+    PROGRESS.vibes = 'PRETTY GOOD VIBES'
   }
   else if (PROGRESS.score <= 40) {
     PROGRESS.vibes = 'GOOD VIBES!'
@@ -62,20 +65,11 @@ function updateProgress() {
   else if (PROGRESS.score <= 50) {
     PROGRESS.vibes = 'EXCELLENT VIBES!!'
   }
-  else if (PROGRESS.score > 60) {
+  else if (PROGRESS.score >= 60) {
     PROGRESS.vibes = 'STRAIGHT VIBING!!!'
   }
   $('#progress').html(PROGRESS.vibes);
 }
-
-// function handleComplete(){
-//   console.log('init assets');
-//   charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 32]}});
-//   char = new createjs.Sprite(charSpriteSheet);
-//   stage.addChild(char);
-//   char.play('walk');
-//   stage.update();
-// }
 
 function initStage() {
   stage = new createjs.StageGL('dingCanvas');
@@ -136,14 +130,6 @@ function initChar() {
   char.play('walk');
 
 }
-
-// function initWelcome() {
-//   text = new createjs.Text("catch the stars and accumulate good vibes!", "24px Arial", "#FFF");
-//   text.x = 100;
-//   text.y = 400;
-//   text.textBaseline = "alphabetic";
-//   text.cache(-200, -200, 600, 2000);
-// }
 
 function populateStage() {
   stage.addChild(nightSky, fallingStars, floor, shadow, char);
