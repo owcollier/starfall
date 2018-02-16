@@ -1,5 +1,5 @@
 function randomXCoord() {
-  return Math.floor(Math.random() * (450 - 25)) + 25;
+  return Math.floor(Math.random() * ((stage.canvas.width - 25) - 25)) + 25;
 }
 
 function randomVelocity() {
@@ -10,40 +10,72 @@ function randomColorIndex() {
   return Math.floor(Math.random() * (5 - 1) + 1);
 }
 
-let loader, stage, nightSky, fallingStars, star, starSprites, floor, shadow, char, charSpriteSheet, test;
+const rainbow = [
+  '#FF0000',
+  '#FF7F00',
+  '#FFFF00',
+  '#00FF00',
+  '#0000FF',
+  '#4B0082',
+  '#9400D3'
+]
+
+let rainbowIndex = 0;
+
+const PROGRESS = {
+  score: 0,
+  vibes: 'NO VIBES...'
+}
+
+let loader, stage, nightSky, fallingStars, star, starSprites, floor, shadow, char, charSpriteSheet, text, percent;
 
 function init() {
   initStage();
 
   loader = new createjs.LoadQueue(false);
   loader.addEventListener('complete', initGame);
-  loader.addEventListener('progress', handleProgress);
+  loader.addEventListener('progress', handleLoading);
   loader.loadManifest([
     {id:'char', src:'./assets/starfall_char2.png'},
     {id:'star', src:'./assets/starfall_star2.png'}
   ]);
 }
 
-// preload = new createjs.LoadQueue(false);
-//     preload.addEventListener('complete', handleComplete);
-//     preload.addEventListener('progress', handleProgress);
-//     preload.loadManifest([
-//         {id: 'isb', src: imgurl + 'side_back.png'}
-// ]);
-
-function handleProgress(){
-  var percent = Math.round(loader.progress*100);
+function handleLoading() {
+  percent = Math.round(loader.progress*100);
   console.log(percent+"%");
 }
 
-function handleComplete(){
-  console.log('init assets');
-  charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 32]}});
-  char = new createjs.Sprite(charSpriteSheet);
-  stage.addChild(char);
-  char.play('walk');
-  stage.update();
+function updateProgress() {
+  if (PROGRESS.score > 0 && PROGRESS.score <= 50) {
+    PROGRESS.vibes = 'SOME VIBES...'
+  }
+  else if (PROGRESS.score <= 100) {
+    PROGRESS.vibes = 'OKAY VIBES...'
+  }
+  else if (PROGRESS.score <= 150) {
+    PROGRESS.vibes = 'PRETTY GOOD VIBES.'
+  }
+  else if (PROGRESS.score <= 200) {
+    PROGRESS.vibes = 'GOOD VIBES!'
+  }
+  else if (PROGRESS.score <= 250) {
+    PROGRESS.vibes = 'EXCELLENT VIBES!!'
+  }
+  else if (PROGRESS.score > 250) {
+    PROGRESS.vibes = 'STRAIGHT VIBING!!!'
+  }
+  $('#progress').html(PROGRESS.vibes);
 }
+
+// function handleComplete(){
+//   console.log('init assets');
+//   charSpriteSheet = new createjs.SpriteSheet({images: [loader.getResult('char')], frames: {width: 64, height: 64}, animations: {walk: [0, 32]}});
+//   char = new createjs.Sprite(charSpriteSheet);
+//   stage.addChild(char);
+//   char.play('walk');
+//   stage.update();
+// }
 
 function initStage() {
   stage = new createjs.StageGL('dingCanvas');
@@ -68,9 +100,6 @@ function addStar() {
   star.regX = 0;
   star.regY = 0;
   star.play('fall');
-  stage.update();
-  // star = new FallingStar(randomXCoord(), randomColorIndex(), randomVelocity());
-  // fallingStars.addChild(star);
 }
 
 function initFloor() {
@@ -105,20 +134,24 @@ function initChar() {
   char.regX = 32;
   char.regY = 0;
   char.play('walk');
-  stage.update();
 
 }
 
-function initTest() {
-  console.log('testing, testing');
+function initWelcome() {
+  text = new createjs.Text("catch the stars and accumulate good vibes!", "24px Arial", "#FFF");
+  text.x = 100;
+  text.y = 400;
+  text.textBaseline = "alphabetic";
+  text.cache(-200, -200, 600, 2000);
 }
 
 function populateStage() {
-  stage.addChild(nightSky, fallingStars, floor, shadow, char);
+  stage.addChild(nightSky, fallingStars, floor, shadow, char, text);
   stage.update();
 }
 
 function setUp() {
+  initWelcome();
   initSky();
   initStars();
   initFloor();
@@ -160,12 +193,12 @@ function initGame() {
 
       if (char.hitArea.hitTest(pt.x, pt.y)) { 
         child.alpha = 0.2;
-        console.log('hit!');
+        PROGRESS.score += 1;
+        $('#score').html(PROGRESS.score);
       } 
 
       if (child.y >= stage.canvas.height + 25) {
         fallingStars.removeChild(child);
-        console.log('out!')
       }
 
       stage.update();
@@ -192,17 +225,20 @@ function initGame() {
   });
 
   setInterval(function() {
-    console.log('heyo!')
+    updateProgress();
+    if (rainbowIndex == 10) {
+      rainbowIndex = 0;
+    }
+    $('#progress').css('color', rainbow[rainbowIndex]);
+    rainbowIndex += 1;
   }, 1000);
 
   setInterval(function() {
     if (starFallFrames >= 40) {
       speedingUp = true;
-      // console.log('<<<<<UPPER>>>>>')
     }
     if (starFallFrames <= 10) {
       speedingUp = false;
-      // console.log('<<<<<BOTTOM>>>>>')
     }
     if (speedingUp) {
       starFallFrames -= 2;
@@ -211,8 +247,6 @@ function initGame() {
       starFallFrames += 2;
     }
     stage.update();
-    // console.log(`frames at: ${starFallFrames}`);
-    // console.log('speeding up?', speedingUp);
   }, 3000);
 
 };

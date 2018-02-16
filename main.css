@@ -10,3 +10,24 @@ canvas {
   display: block;
   border: 4px solid #1B9CFC;
 }
+
+div {
+  display: inline;
+  font-family: 'VT323', monospace;
+}
+
+.progress-div {
+  position: relative;
+  left: 25%;
+  bottom: 1.7em;
+  font-size: 24px;
+  color: #F8EFBA;
+}
+
+.score-div {
+  position: relative;
+  left: 28%;
+  bottom: 1.1em;
+  font-size: 36px;
+  color: #F8EFBA;
+}
