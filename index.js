@@ -170,7 +170,7 @@ function initGame() {
   })
 
   // createjs.Ticker.timingMode = createjs.Ticker.RAF;
-  createjs.Ticker.framerate = 15;
+  createjs.Ticker.framerate = 20;
   createjs.Ticker.addEventListener('tick', () => {
 
     char.x += char.velocity;
