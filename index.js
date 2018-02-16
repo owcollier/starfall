@@ -47,7 +47,7 @@ function handleLoading() {
 }
 
 function updateProgress() {
-  if (PROGRESS.score > 0 && PROGRESS.score <= 10) {
+  if (PROGRESS.score >= 1 && PROGRESS.score <= 10) {
     PROGRESS.vibes = 'SOME VIBES...'
   }
   else if (PROGRESS.score <= 20) {
@@ -164,7 +164,7 @@ function initGame() {
   if (window.innerHeight > window.innerWidth) {
     $('#resizeAlert').css('display', 'block');
   }
-  
+
   let myVelocity = 10;
   let starVelocity = 10;
   let starFallFrames = 40;
