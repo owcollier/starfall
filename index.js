@@ -43,6 +43,7 @@ function init() {
 
 function handleLoading() {
   percent = Math.round(loader.progress*100);
+  $('#loadingScreen').css('display', 'block').html(` LOADING . . . ${percent}`);
   console.log(percent+"%");
 }
 
@@ -146,6 +147,8 @@ function setUp() {
 }
 
 function initGame() {
+
+  $('#loadingScreen').css('display', 'none');
 
   if (window.innerHeight > window.innerWidth) {
     $('#resizeAlert').css('display', 'block');

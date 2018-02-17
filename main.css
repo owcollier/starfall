@@ -39,6 +39,18 @@ div {
   z-index: 100;
 }
 
+.loading-div {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background-color: #1B1464;
+  color: #F8EFBA;
+  display: none;
+  font-size: 72px;
+  z-index: 100;
+}
+
 .canvas-div {
   margin: auto;
   position: relative;
