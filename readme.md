@@ -2,6 +2,10 @@
 
 A browser game and HTML5 Canvas/animation experiment.
 
+<p align='center'>
+    <img width='600' height='450'src='https://i.imgur.com/8nV5f4O.png'>	
+</p>
+
 *by Wade Collier*
 
 ## Overview
