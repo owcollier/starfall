@@ -1,3 +1,5 @@
+'use strict';
+
 function randomXCoord() {
   return Math.floor(Math.random() * ((stage.canvas.width - 25) - 25)) + 25;
 }
@@ -18,14 +20,14 @@ const rainbow = [
   '#0000FF',
   '#4B0082',
   '#9400D3'
-]
+];
 
 let rainbowIndex = 0;
 
 const PROGRESS = {
   score: 0,
   vibes: 'NO VIBES...'
-}
+};
 
 let loader, stage, nightSky, fallingStars, star, starSprites, floor, shadow, char, charSpriteSheet, text, percent;
 
@@ -44,30 +46,30 @@ function init() {
 function handleLoading() {
   percent = Math.round(loader.progress*100);
   $('#loadingScreen').css('display', 'block').html(` LOADING . . . ${percent}`);
-  console.log(percent+"%");
+  console.log(percent+'%');
 }
 
 function updateProgress() {
   if (PROGRESS.score < 1) {
-    PROGRESS.vibes = 'NO VIBES...'
+    PROGRESS.vibes = 'NO VIBES...';
   }
   else if (PROGRESS.score <= 10) {
-    PROGRESS.vibes = 'SOME VIBES...'
+    PROGRESS.vibes = 'SOME VIBES...';
   }
   else if (PROGRESS.score <= 20) {
-    PROGRESS.vibes = 'OKAY VIBES...'
+    PROGRESS.vibes = 'OKAY VIBES...';
   }
   else if (PROGRESS.score <= 30) {
-    PROGRESS.vibes = 'PRETTY GOOD VIBES'
+    PROGRESS.vibes = 'PRETTY GOOD VIBES';
   }
   else if (PROGRESS.score <= 40) {
-    PROGRESS.vibes = 'GOOD VIBES!'
+    PROGRESS.vibes = 'GOOD VIBES!';
   }
   else if (PROGRESS.score <= 50) {
-    PROGRESS.vibes = 'EXCELLENT VIBES!!'
+    PROGRESS.vibes = 'EXCELLENT VIBES!!';
   }
   else if (PROGRESS.score >= 60) {
-    PROGRESS.vibes = 'STRAIGHT VIBING!!!'
+    PROGRESS.vibes = 'STRAIGHT VIBING!!!';
   }
   $('#progress').html(PROGRESS.vibes);
 }
@@ -170,7 +172,7 @@ function initGame() {
       char.changeDirection();
       stage.update();
     }
-  })
+  });
 
   // createjs.Ticker.timingMode = createjs.Ticker.RAF;
   createjs.Ticker.framerate = 20;
@@ -242,7 +244,7 @@ function initGame() {
     stage.update();
   }, 3000);
 
-};
+}
 
 window.addEventListener('resize', () => {
   if (window.innerHeight > window.innerWidth) {
@@ -255,4 +257,4 @@ window.addEventListener('resize', () => {
 
 $(() => {
   init();
-})
+});
