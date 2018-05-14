@@ -1,3 +1,5 @@
+'use strict';
+
 class FallingStar extends createjs.Sprite {
   constructor(spriteSheet, x, v) {
     super(spriteSheet);

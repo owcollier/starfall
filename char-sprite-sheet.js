@@ -1,3 +1,5 @@
+'use strict';
+
 class CharSpriteSheet extends createjs.SpriteSheet {
   constructor(images) {
     super();

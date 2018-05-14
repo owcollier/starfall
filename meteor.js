@@ -1,3 +1,5 @@
+'use strict';
+
 class Meteor extends createjs.Shape {
   constructor(x, xV, yV) {
     super();
